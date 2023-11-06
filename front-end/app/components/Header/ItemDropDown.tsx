@@ -33,15 +33,9 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-          fontWeight: 500
-        }}
         endIcon={<KeyboardArrowDownOutlinedIcon />}
       >
-        <Typography variant={'body1'} sx={{ fontSize: '1rem' }}>
+        <Typography variant={'body1'} sx={{ fontWeight: 500 }}>
           {label}
         </Typography>
       </Button>
@@ -54,7 +48,7 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
           'aria-labelledby': 'basic-button'
         }}
       >
-        {dropDown?.map((item, index) => (
+        {dropDown?.map((item: string, index: number) => (
           <MenuItem key={item + index} onClick={handleClose}>
             <ListItemIcon>
               <ContentPaste fontSize="small" />

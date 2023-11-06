@@ -18,9 +18,10 @@ const roboto = Roboto({
 
 const theme = extendTheme({
   trello: {
-    appBarHeight: '48px',
+    headerHeight: '48px',
     boardBarHeight: '60px'
   },
+
   colorSchemes: {
     light: {
       palette: {
@@ -35,9 +36,57 @@ const theme = extendTheme({
       }
     }
   },
-
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          '*::-webkit-scrollbar': {
+            width: '8px',
+            height: '8px'
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: '#bdc3c7',
+            borderRadius: '8px'
+          },
+          '*::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#00b894'
+          }
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: '0.875rem'
+        })
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: '0.875rem',
+          '.MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.primary.light
+          },
+          '&:hover': {
+            '.MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.primary.main
+            }
+          }
+        })
+      }
+    }
+  },
   spacing: (factor: number) => `${0.25 * factor}rem`,
-
   typography: {
     fontFamily: roboto.style.fontFamily
   }

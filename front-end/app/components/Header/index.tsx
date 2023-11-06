@@ -16,28 +16,29 @@ import Tooltip from '@mui/material/Tooltip'
 import Profile from './Profile'
 
 export default function Header() {
-  const classBox = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 1,
-    fontWeight: 500
-  }
   return (
     <Box
       px={8}
       sx={{
         width: '100%',
-        height: (theme) => theme.trello.appBarHeight,
+        height: (theme) => theme.trello.headerHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         color: 'primary.main'
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
         <AppsIcon />
-        <Box sx={classBox}>
-          <SvgIcon component={TrelloIcon} inheritViewBox />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            fontWeight: 500
+          }}
+        >
+          <SvgIcon component={TrelloIcon} inheritViewBox fontSize="small" />
           <Typography variant="body1" sx={{ fontWeight: '700' }}>
             Trello
           </Typography>
@@ -66,7 +67,7 @@ export default function Header() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
         <TextField type="search" size="small" label="Search..." />
         <ModeSelect />
-        <Tooltip title="Notification">
+        <Tooltip title="Notifications">
           <Badge color="secondary" variant="dot" sx={{ cursor: 'pointer' }}>
             <NotificationsNoneOutlinedIcon />
           </Badge>

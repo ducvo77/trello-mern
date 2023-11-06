@@ -34,7 +34,7 @@ export default function ModeSelect() {
   const boxClass = { display: 'flex', alignItems: 'center', gap: 2 }
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl size="small">
       <InputLabel id="container-mode-label">Mode</InputLabel>
       {isClient && (
         <Select
