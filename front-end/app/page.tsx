@@ -1,9 +1,5 @@
-import Mode from './components/Mode'
+import Board from './components/Board'
 
 export default function Home() {
-  return (
-    <main className="flex items-center justify-center h-screen flex-col">
-      <Mode />
-    </main>
-  )
+  return <Board />
 }

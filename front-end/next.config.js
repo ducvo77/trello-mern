@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+/* eslint @typescript-eslint/no-var-requires: "off" */
 
-module.exports = nextConfig
+const withSvgr = require('next-plugin-svgr')
+
+module.exports = withSvgr()

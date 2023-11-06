@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import './globals.css'
-import { Providers } from './components/Providers'
+import ThemeRegistry from './components/ThemeRegistry/ThemeRegistry'
+import Container from '@mui/material/Container'
+
+import NavBar from './components/NavBar'
+import Header from './components/Header'
 
 const roboto = Roboto({
-  weight: '400',
+  weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap'
 })
@@ -22,7 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Providers>{children}</Providers>
+        <ThemeRegistry>
+          <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+            <Header />
+            <NavBar />
+            {children}
+          </Container>
+        </ThemeRegistry>
       </body>
     </html>
   )
