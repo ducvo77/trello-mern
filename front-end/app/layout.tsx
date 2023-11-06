@@ -3,7 +3,6 @@ import { Roboto } from 'next/font/google'
 import './globals.css'
 import ThemeRegistry from './components/ThemeRegistry/ThemeRegistry'
 import Container from '@mui/material/Container'
-
 import NavBar from './components/NavBar'
 import Header from './components/Header'
 

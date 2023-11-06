@@ -18,17 +18,17 @@ import Profile from './Profile'
 export default function Header() {
   return (
     <Box
-      px={8}
       sx={{
         width: '100%',
         height: (theme) => theme.trello.headerHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        color: 'primary.main'
+        color: 'primary.main',
+        px: 8
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+      <Box sx={boxContainerStyle}>
         <AppsIcon />
         <Box
           sx={{
@@ -64,7 +64,7 @@ export default function Header() {
           Create
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+      <Box sx={boxContainerStyle}>
         <TextField type="search" size="small" label="Search..." />
         <ModeSelect />
         <Tooltip title="Notifications">
@@ -81,3 +81,5 @@ export default function Header() {
     </Box>
   )
 }
+
+const boxContainerStyle = { display: 'flex', alignItems: 'center', gap: 3 }
