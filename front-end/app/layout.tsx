@@ -26,7 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <ThemeRegistry>
-          <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+          <Container
+            disableGutters
+            maxWidth={false}
+            sx={{ maxHeight: '100vh', overflowY: 'hidden' }}
+          >
             <Header />
             <NavBar />
             {children}

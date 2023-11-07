@@ -24,7 +24,7 @@ function NavBar() {
         justifyContent: 'space-between',
         color: '#fff',
         borderBottom: '1px solid white',
-        px: 8,
+        px: 3,
         bgcolor: (theme) =>
           theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
       }}
@@ -77,7 +77,8 @@ function NavBar() {
               width: 28,
               height: 28,
               fontSize: '0.75rem',
-              border: '0.5px solid #fff'
+              border: '0.5px solid #fff',
+              '&:first-of-type': { bgcolor: '#a4b0be' }
             }
           }}
         >

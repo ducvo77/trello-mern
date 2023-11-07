@@ -29,8 +29,6 @@ export default function ModeSelect() {
     setIsClient(true)
   }, [])
 
-  // variable css
-
   return (
     <FormControl size="small">
       <InputLabel
@@ -53,8 +51,11 @@ export default function ModeSelect() {
           autoWidth
           label="Mode"
           sx={{
+            fontSize: '0.875rem',
             color: '#fff',
-            '.MuiOutlinedInput-notchedOutline': { borderColor: '#fff' },
+            '.MuiOutlinedInput-notchedOutline': {
+              borderColor: '#fff'
+            },
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: '#fff '
             },
@@ -66,20 +67,20 @@ export default function ModeSelect() {
             }
           }}
         >
-          <MenuItem value="light" sx={{ fontSize: '0.865rem' }}>
+          <MenuItem value="light" sx={{ fontSize: '0.875rem' }}>
             <Box sx={boxClass}>
               <LightModeIcon fontSize="small" />
               <span>Light</span>
             </Box>
           </MenuItem>
 
-          <MenuItem value="dark" sx={{ fontSize: '0.865rem' }}>
+          <MenuItem value="dark" sx={{ fontSize: '0.875rem' }}>
             <Box sx={boxClass}>
               <DarkModeIcon fontSize="small" />
               <span>Dark</span>
             </Box>
           </MenuItem>
-          <MenuItem value="system" sx={{ fontSize: '0.865rem' }}>
+          <MenuItem value="system" sx={{ fontSize: '0.875rem' }}>
             <Box sx={boxClass}>
               <SettingsBrightnessIcon fontSize="small" />
               <span>System</span>

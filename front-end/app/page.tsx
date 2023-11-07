@@ -1,5 +1,5 @@
-import Board from './components/Board'
+import BoxColumnList from './components/Board/BoxColumnList'
 
 export default function Home() {
-  return <Board />
+  return <BoxColumnList />
 }

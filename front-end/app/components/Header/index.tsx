@@ -31,7 +31,7 @@ export default function Header() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        px: 8,
+        px: 3,
         bgcolor: (theme) =>
           theme.palette.mode === 'dark' ? '#2c3e50' : '#1565c0'
       }}
@@ -123,7 +123,7 @@ export default function Header() {
           }}
           sx={{
             '& label': { color: '#fff' },
-            '& input': { color: '#fff' },
+            '& input': { color: '#fff', fontSize: '0.875rem' },
             '& label.Mui-focused': { color: '#fff' },
             '& .MuiOutlinedInput-root': {
               px: 2,

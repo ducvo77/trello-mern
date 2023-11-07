@@ -29,7 +29,7 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
     <>
       <Button
         id={'basic-button' + '-' + label}
-        aria-controls={open ? 'basic-menu' : undefined}
+        aria-controls={open ? 'basic-menu-header-item' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
@@ -44,7 +44,7 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
         </Typography>
       </Button>
       <Menu
-        id="basic-menu"
+        id="basic-menu-header-item"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -58,9 +58,6 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
               <ContentPaste fontSize="small" />
             </ListItemIcon>
             <ListItemText>{item}</ListItemText>
-            <Typography variant="body2" color="text.secondary">
-              ⌘V
-            </Typography>
           </MenuItem>
         ))}
       </Menu>

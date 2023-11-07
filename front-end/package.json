@@ -14,11 +14,11 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.16",
     "next": "14.0.1",
+    "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "next-plugin-svgr": "^1.1.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -29,6 +29,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-prettier": "^5.0.1",
+    "next-plugin-svgr": "^1.1.9",
     "prettier": "^3.0.3",
     "typescript": "^5"
   }

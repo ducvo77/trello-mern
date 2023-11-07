@@ -54,6 +54,13 @@ const theme = extendTheme({
         }
       }
     },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontSize: '0.875rem'
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -67,15 +74,12 @@ const theme = extendTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: {
-          fontSize: '0.875rem'
-        }
+        root: {}
       }
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          fontSize: '0.875rem',
           '& fieldset': { borderWidth: '0.5px !important' },
           '&:hover fieldset': { borderWidth: '1px !important' },
           '&.Mui-focused fieldset': { borderWidth: '1px !important' }
