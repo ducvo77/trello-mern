@@ -31,11 +31,19 @@ export default function ModeSelect() {
 
   // variable css
 
-  const boxClass = { display: 'flex', alignItems: 'center', gap: 2 }
-
   return (
     <FormControl size="small">
-      <InputLabel id="container-mode-label">Mode</InputLabel>
+      <InputLabel
+        id="container-mode-label"
+        sx={{
+          color: '#fff',
+          '&.Mui-focused': {
+            color: '#fff'
+          }
+        }}
+      >
+        Mode
+      </InputLabel>
       {isClient && (
         <Select
           labelId="container-mode-label"
@@ -44,21 +52,34 @@ export default function ModeSelect() {
           onChange={handleChangeMode}
           autoWidth
           label="Mode"
+          sx={{
+            color: '#fff',
+            '.MuiOutlinedInput-notchedOutline': { borderColor: '#fff' },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#fff '
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#fff '
+            },
+            '.MuiSvgIcon-root': {
+              color: '#fff '
+            }
+          }}
         >
-          <MenuItem value="light">
+          <MenuItem value="light" sx={{ fontSize: '0.865rem' }}>
             <Box sx={boxClass}>
               <LightModeIcon fontSize="small" />
               <span>Light</span>
             </Box>
           </MenuItem>
 
-          <MenuItem value="dark">
+          <MenuItem value="dark" sx={{ fontSize: '0.865rem' }}>
             <Box sx={boxClass}>
               <DarkModeIcon fontSize="small" />
               <span>Dark</span>
             </Box>
           </MenuItem>
-          <MenuItem value="system">
+          <MenuItem value="system" sx={{ fontSize: '0.865rem' }}>
             <Box sx={boxClass}>
               <SettingsBrightnessIcon fontSize="small" />
               <span>System</span>
@@ -69,3 +90,5 @@ export default function ModeSelect() {
     </FormControl>
   )
 }
+
+const boxClass = { display: 'flex', alignItems: 'center', gap: 2 }

@@ -22,9 +22,11 @@ function NavBar() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        color: 'primary.main',
-        borderTop: '1px solid #00bfa5',
-        px: 8
+        color: '#fff',
+        borderBottom: '1px solid white',
+        px: 8,
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
       }}
     >
       <Box sx={boxContainerStyle}>
@@ -63,7 +65,7 @@ function NavBar() {
         <Button
           variant="outlined"
           startIcon={<PersonAddOutlinedIcon />}
-          sx={{ fontWeight: 600 }}
+          sx={{ fontWeight: 600, borderColor: '#fff', color: '#fff' }}
         >
           Invite
         </Button>
@@ -74,7 +76,8 @@ function NavBar() {
             '& .MuiAvatar-root': {
               width: 28,
               height: 28,
-              fontSize: '0.75rem'
+              fontSize: '0.75rem',
+              border: '0.5px solid #fff'
             }
           }}
         >
@@ -110,7 +113,7 @@ const boxContainerStyle = {
   gap: 3
 }
 const chipStyle = {
-  color: 'primary.main',
+  color: '#fff',
   fontWeight: '500',
   textTransform: 'capitalize',
   bgcolor: 'transparent',
@@ -118,7 +121,7 @@ const chipStyle = {
   px: 1,
   borderRadius: 1,
   '& .MuiChip-icon': {
-    color: 'primary.main'
+    color: '#fff'
   },
   '&:hover': {
     bgcolor: 'primary.50'

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import ModeSelect from '../ModeSelect'
 import AppsIcon from '@mui/icons-material/Apps'
@@ -14,8 +15,14 @@ import Badge from '@mui/material/Badge'
 import TextField from '@mui/material/TextField'
 import Tooltip from '@mui/material/Tooltip'
 import Profile from './Profile'
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
+import InputAdornment from '@mui/material/InputAdornment'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 
 export default function Header() {
+  const [searchValue, setSearchValue] = useState('')
+
   return (
     <Box
       sx={{
@@ -24,8 +31,9 @@ export default function Header() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        color: 'primary.main',
-        px: 8
+        px: 8,
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? '#2c3e50' : '#1565c0'
       }}
     >
       <Box sx={boxContainerStyle}>
@@ -60,15 +68,76 @@ export default function Header() {
           label="Templates"
           dropDown={['Profile', 'My account', 'Logout']}
         />
-        <Button variant="outlined" sx={{ fontWeight: '500' }}>
+        <Button
+          variant="outlined"
+          sx={{
+            fontWeight: '500',
+            color: '#fff',
+            border: 'none',
+            '&:hover': {
+              border: 'none'
+            }
+          }}
+          startIcon={<LibraryAddIcon />}
+        >
           Create
         </Button>
       </Box>
       <Box sx={boxContainerStyle}>
-        <TextField type="search" size="small" label="Search..." />
+        <TextField
+          type="text"
+          size="small"
+          label="Search..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchOutlinedIcon
+                  sx={{
+                    color: '#fff'
+                  }}
+                />
+              </InputAdornment>
+            ),
+
+            endAdornment: (
+              <InputAdornment
+                position="start"
+                sx={{ mr: 0 }}
+                onClick={() => {
+                  setSearchValue('')
+                }}
+              >
+                {
+                  <CloseOutlinedIcon
+                    sx={{
+                      color: searchValue ? '#fff' : 'transparent',
+                      cursor: searchValue ? 'pointer' : 'default',
+                      textAlign: 'right'
+                    }}
+                  />
+                }
+              </InputAdornment>
+            )
+          }}
+          sx={{
+            '& label': { color: '#fff' },
+            '& input': { color: '#fff' },
+            '& label.Mui-focused': { color: '#fff' },
+            '& .MuiOutlinedInput-root': {
+              px: 2,
+              '& fieldset': { borderColor: '#fff' },
+              '&:hover fieldset': {
+                borderColor: '#fff'
+              },
+              '&.Mui-focused fieldset': { borderColor: '#fff' }
+            }
+          }}
+        />
         <ModeSelect />
         <Tooltip title="Notifications">
-          <Badge color="secondary" variant="dot" sx={{ cursor: 'pointer' }}>
+          <Badge color="warning" variant="dot" sx={{ cursor: 'pointer' }}>
             <NotificationsNoneOutlinedIcon />
           </Badge>
         </Tooltip>
@@ -82,4 +151,9 @@ export default function Header() {
   )
 }
 
-const boxContainerStyle = { display: 'flex', alignItems: 'center', gap: 3 }
+const boxContainerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 3,
+  color: '#fff'
+}

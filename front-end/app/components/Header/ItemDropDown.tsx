@@ -26,7 +26,7 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
   }
 
   return (
-    <div>
+    <>
       <Button
         id={'basic-button' + '-' + label}
         aria-controls={open ? 'basic-menu' : undefined}
@@ -34,8 +34,12 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         endIcon={<KeyboardArrowDownOutlinedIcon />}
+        sx={{ color: '#fff' }}
       >
-        <Typography variant={'body1'} sx={{ fontWeight: 500 }}>
+        <Typography
+          variant={'body1'}
+          sx={{ fontWeight: 500, fontSize: '0.875rem' }}
+        >
           {label}
         </Typography>
       </Button>
@@ -60,6 +64,6 @@ export default function ItemDropDown({ label, dropDown }: ItemDropDownTypes) {
           </MenuItem>
         ))}
       </Menu>
-    </div>
+    </>
   )
 }

@@ -37,8 +37,8 @@ export default function Profile() {
           >
             <Avatar
               sx={{
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
