@@ -2,8 +2,15 @@
 
 import Box from '@mui/material/Box'
 import BoxColumn from './BoxColumn'
+import { HEADER_HEIGHT, BOARD_BAR_HEIGHT } from '@/app/utils/constants'
+import Button from '@mui/material/Button'
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined'
 
-function BoxColumnList() {
+interface BoxColumnListType {
+  columns: Column[]
+}
+
+function BoxColumnList({ columns }: BoxColumnListType) {
   return (
     <Box
       sx={{
@@ -15,20 +22,29 @@ function BoxColumnList() {
         overflowX: 'scroll',
         bgcolor: (theme) =>
           theme.palette.mode === 'dark' ? '#34495e' : '#1976d2',
-        height: (theme) =>
-          `calc(100vh - ${theme.trello.headerHeight} - ${theme.trello.boardBarHeight})`
+        height: `calc(100vh - ${HEADER_HEIGHT} - ${BOARD_BAR_HEIGHT})`
       }}
     >
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
-      <BoxColumn />
+      {columns.map((column) => (
+        <BoxColumn key={column._id} column={column} />
+      ))}
+
+      <Box>
+        <Button
+          startIcon={<AddBoxOutlinedIcon />}
+          sx={{
+            color: '#fff',
+            bgcolor: '#ffffff3d',
+            px: 5,
+            py: 2,
+            '&:hover': {
+              bgcolor: '#ffffff49'
+            }
+          }}
+        >
+          Add new column
+        </Button>
+      </Box>
     </Box>
   )
 }

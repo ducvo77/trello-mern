@@ -19,6 +19,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import { HEADER_HEIGHT } from '@/app/utils/constants'
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState('')
@@ -27,7 +28,7 @@ export default function Header() {
     <Box
       sx={{
         width: '100%',
-        height: (theme) => theme.trello.headerHeight,
+        height: HEADER_HEIGHT,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -38,12 +39,14 @@ export default function Header() {
     >
       <Box sx={boxContainerStyle}>
         <AppsIcon />
+
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             gap: 1.5,
-            fontWeight: 500
+            fontWeight: 500,
+            cursor: 'pointer'
           }}
         >
           <SvgIcon component={TrelloIcon} inheritViewBox fontSize="small" />

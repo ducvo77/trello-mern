@@ -19,7 +19,11 @@ import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined'
 
-function ColumnHeader() {
+interface ColumnHeaderType {
+  column: Column
+}
+
+function ColumnHeader({ column }: ColumnHeaderType) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,17 +37,19 @@ function ColumnHeader() {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        mb: 2
       }}
     >
       <Typography
         variant="h2"
         sx={{
           fontWeight: 500,
-          padding: '6px 8px 6px 12px'
+          padding: '6px 8px 6px 12px',
+          lineHeight: 1.6
         }}
       >
-        Questions For Next Meeting
+        {column.title}
       </Typography>
       <Tooltip title="More Options">
         <Button
@@ -52,9 +58,10 @@ function ColumnHeader() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          endIcon={<MoreHorizOutlinedIcon />}
-          sx={{ p: 0 }}
-        />
+          sx={{ minWidth: 10 }}
+        >
+          <MoreHorizOutlinedIcon />
+        </Button>
       </Tooltip>
       <Menu
         id="basic-button-column-header"

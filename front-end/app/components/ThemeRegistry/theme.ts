@@ -17,11 +17,6 @@ const roboto = Roboto({
 // success
 
 const theme = extendTheme({
-  trello: {
-    headerHeight: '48px',
-    boardBarHeight: '60px'
-  },
-
   // colorSchemes: {
   //   light: {
   //     palette: {

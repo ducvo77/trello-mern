@@ -9,8 +9,13 @@ import CardMedia from '@mui/material/CardMedia'
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined'
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined'
 import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined'
+import Image from 'next/image'
 
-function Card() {
+interface CardType {
+  card: Card
+}
+
+function Card({ card }: CardType) {
   return (
     <Box
       sx={{
@@ -34,26 +39,38 @@ function Card() {
         }
       }}
     >
-      <CardMedia
-        component="img"
-        height="100"
-        image="https://mui.com/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      />
-      <Typography variant="body1">
-        How can I get access to the super secret document?
-      </Typography>
-      <CardActions>
-        <Button size="small" startIcon={<PeopleOutlineOutlinedIcon />}>
-          20
-        </Button>
-        <Button size="small" startIcon={<InsertCommentOutlinedIcon />}>
-          15
-        </Button>
-        <Button size="small" startIcon={<AttachmentOutlinedIcon />}>
-          10
-        </Button>
-      </CardActions>
+      {card.cover && (
+        <CardMedia
+          component={'img'}
+          height="auto"
+          width="220"
+          image={card.cover}
+          alt="Paella dish"
+          sx={{ objectFit: 'contain' }}
+        />
+      )}
+      <Typography variant="body1">{card.title}</Typography>
+      {(!!card.memberIds.length ||
+        !!card.comments.length ||
+        !!card.attachments.length) && (
+        <CardActions>
+          {!!card.memberIds.length && (
+            <Button size="small" startIcon={<PeopleOutlineOutlinedIcon />}>
+              {card.memberIds.length}
+            </Button>
+          )}
+          {!!card.comments.length && (
+            <Button size="small" startIcon={<InsertCommentOutlinedIcon />}>
+              {card.comments.length}
+            </Button>
+          )}
+          {!!card.attachments.length && (
+            <Button size="small" startIcon={<AttachmentOutlinedIcon />}>
+              {card.attachments.length}
+            </Button>
+          )}
+        </CardActions>
+      )}
       <ModeOutlinedIcon
         sx={{
           position: 'absolute',

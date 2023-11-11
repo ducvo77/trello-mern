@@ -12,18 +12,19 @@ import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Tooltip from '@mui/material/Tooltip'
+import { BOARD_BAR_HEIGHT } from '@/app/utils/constants'
+import { MOCK_DATA } from '@/app/apis/mock-data'
 
 function NavBar() {
   return (
     <Box
       sx={{
         width: '100%',
-        height: (theme) => theme.trello.boardBarHeight,
+        height: BOARD_BAR_HEIGHT,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         color: '#fff',
-        borderBottom: '1px solid white',
         px: 3,
         bgcolor: (theme) =>
           theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
@@ -34,13 +35,13 @@ function NavBar() {
           sx={chipStyle}
           clickable
           icon={<SpaceDashboardIcon />}
-          label="DucVo MERN Stack Board"
+          label={MOCK_DATA.board.title}
         />
         <Chip
           sx={chipStyle}
           clickable
           icon={<VpnLockOutlinedIcon />}
-          label="Public/ Private Workspace"
+          label={MOCK_DATA.board.type}
         />
         <Chip
           sx={chipStyle}
@@ -115,7 +116,7 @@ const boxContainerStyle = {
 }
 const chipStyle = {
   color: '#fff',
-  fontWeight: '500',
+  fontWeight: '400',
   textTransform: 'capitalize',
   bgcolor: 'transparent',
   border: 'none',
