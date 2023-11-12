@@ -4,12 +4,14 @@ import Box from '@mui/material/Box'
 import Card from './Card'
 import ColumnHeader from './ColumnHeader'
 import ColumnFooter from './ColumnFooter'
+import { mapOrder } from '@/app/utils/sorts'
 
 interface BoxColumnType {
   column: Column
 }
 
 function BoxColumn({ column }: BoxColumnType) {
+  const orderedCards = mapOrder(column.cards, column.cardOrderIds, '_id')
   return (
     <Box
       sx={{
@@ -40,7 +42,7 @@ function BoxColumn({ column }: BoxColumnType) {
           overflowY: 'auto'
         }}
       >
-        {column.cards.map((card) => (
+        {orderedCards.map((card) => (
           <Card key={card._id} card={card} />
         ))}
       </Box>

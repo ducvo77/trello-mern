@@ -9,7 +9,6 @@ import CardMedia from '@mui/material/CardMedia'
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined'
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined'
 import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined'
-import Image from 'next/image'
 
 interface CardType {
   card: Card
