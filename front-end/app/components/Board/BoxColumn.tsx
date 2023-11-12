@@ -5,6 +5,8 @@ import Card from './Card'
 import ColumnHeader from './ColumnHeader'
 import ColumnFooter from './ColumnFooter'
 import { mapOrder } from '@/app/utils/sorts'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface BoxColumnType {
   column: Column
@@ -12,8 +14,22 @@ interface BoxColumnType {
 
 function BoxColumn({ column }: BoxColumnType) {
   const orderedCards = mapOrder(column.cards, column.cardOrderIds, '_id')
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column._id, data: column })
+
+  const dndKitStyle = {
+    touchAction: 'none',
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
   return (
     <Box
+      ref={setNodeRef}
+      style={dndKitStyle}
+      {...attributes}
+      {...listeners}
       sx={{
         minWidth: '272px',
         maxWidth: '272px',
