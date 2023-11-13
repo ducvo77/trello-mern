@@ -14,7 +14,10 @@ import {
   useSensors,
   DragEndEvent,
   MouseSensor,
-  TouchSensor
+  TouchSensor,
+  DragOverlay,
+  DropAnimation,
+  defaultDropAnimationSideEffects
 } from '@dnd-kit/core'
 import {
   arrayMove,
@@ -23,13 +26,15 @@ import {
   sortableKeyboardCoordinates
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
+import Card from './Card'
 
 interface BoxColumnListType {
   columns: Column[]
 }
 
 function BoxColumnList({ columns }: BoxColumnListType) {
-  const [orderedColumns, setOrderedColumns] = useState(columns)
+  const [orderedColumns, setOrderedColumns] = useState<Column[]>(columns)
+  const [dndData, setDndData] = useState<any>({})
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -53,12 +58,15 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     })
   )
 
+  const handleDragStart = (event: DragEndEvent) => {
+    const { active } = event
+    setDndData(active.data.current)
+  }
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
 
     if (active.id === over?.id || !over?.id) return
-
-    console.log(event)
 
     const oldIndex = orderedColumns.findIndex((c) => c._id === active.id)
     const newIndex = orderedColumns.findIndex((c) => c._id === over?.id)
@@ -69,13 +77,26 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     // const columnOrderIds = dndOrderedColumns.map((c) => c._id)
 
     setOrderedColumns(dndOrderedColumns)
+    setDndData([])
   }
+
+  const dropAnimation: DropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: {
+        active: {
+          opacity: '0.5'
+        }
+      }
+    })
+  }
+  console.log(dndData)
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
     >
       <SortableContext
         items={orderedColumns.map((column) => column._id)}
@@ -116,6 +137,13 @@ function BoxColumnList({ columns }: BoxColumnListType) {
           </Box>
         </Box>
       </SortableContext>
+      <DragOverlay dropAnimation={dropAnimation}>
+        {!dndData?.columnId ? (
+          <BoxColumn column={dndData} />
+        ) : (
+          <Card card={dndData} />
+        )}
+      </DragOverlay>
     </DndContext>
   )
 }
