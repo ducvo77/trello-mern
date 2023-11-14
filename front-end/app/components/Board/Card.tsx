@@ -43,7 +43,7 @@ function Card({ card }: CardType) {
         position: 'relative',
         backgroundColor: (theme) =>
           theme.palette.mode === 'light' ? 'fff' : '#181721',
-        padding: '8px 12px 4px',
+        padding: '8px',
         borderRadius: 2,
         boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
         border: '2px solid #fff',
@@ -73,7 +73,7 @@ function Card({ card }: CardType) {
       {(!!card.memberIds.length ||
         !!card.comments.length ||
         !!card.attachments.length) && (
-        <CardActions>
+        <CardActions sx={{ p: 0 }}>
           {!!card.memberIds.length && (
             <Button size="small" startIcon={<PeopleOutlineOutlinedIcon />}>
               {card.memberIds.length}

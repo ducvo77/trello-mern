@@ -18,7 +18,14 @@ import {
   DropAnimation,
   defaultDropAnimationSideEffects,
   UniqueIdentifier,
-  closestCorners
+  closestCorners,
+  Active,
+  Over,
+  CollisionDetection,
+  pointerWithin,
+  rectIntersection,
+  getFirstCollision,
+  MeasuringStrategy
 } from '@dnd-kit/core'
 import {
   arrayMove,
@@ -26,7 +33,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates
 } from '@dnd-kit/sortable'
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import Card from './Card'
 import { cloneDeep } from 'lodash'
 
@@ -57,6 +64,8 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     null
   )
 
+  const lastOverId = useRef<UniqueIdentifier | null>(null)
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -85,6 +94,56 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     )
   }
 
+  const moveCardBetweenDifferentColumns = (
+    active: Active,
+    over: Over,
+    overColumn: Column,
+    activeColumn: Column
+  ) => {
+    setOrderedColumns((prev) => {
+      const overCardIndex = overColumn.cards.findIndex((c) => c._id === over.id)
+
+      let newCardIndex: number = NaN
+
+      const isBelowOverItem =
+        active.rect.current.translated &&
+        active.rect.current.translated.top > over.rect.top + over.rect.height
+
+      const modifier = isBelowOverItem ? 1 : 0
+
+      newCardIndex =
+        overCardIndex >= 0
+          ? overCardIndex + modifier
+          : overColumn.cards.length + 1
+
+      const nextColumns = cloneDeep(prev)
+      const nextActiveColumn = nextColumns.find(
+        (c) => c._id === activeColumn._id
+      )
+      const nextOverColumn = nextColumns.find((c) => c._id === overColumn._id)
+
+      if (nextActiveColumn) {
+        nextActiveColumn.cards = nextActiveColumn.cards.filter(
+          (c) => c._id !== active.id
+        )
+        nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map((c) => c._id)
+      }
+
+      if (nextOverColumn) {
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (c) => c._id !== active.id
+        )
+        nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, {
+          ...active.data.current,
+          columnId: nextOverColumn._id
+        } as Card)
+        nextOverColumn.cardOrderIds = nextOverColumn.cards.map((c) => c._id)
+      }
+
+      return nextColumns
+    })
+  }
+
   const handleDragStart = (event: DragEndEvent) => {
     const { active } = event
     setDndData(active.data.current)
@@ -106,57 +165,13 @@ function BoxColumnList({ columns }: BoxColumnListType) {
 
     const activeColumn = findColumnByCardId(active.id)
     const overColumn = findColumnByCardId(over.id)
+      ? findColumnByCardId(over.id)
+      : orderedColumns.find((c) => c._id === over.id)
 
     if (!activeColumn || !overColumn) return
 
     if (activeColumn._id !== overColumn._id) {
-      setOrderedColumns((prev) => {
-        const overCardIndex = overColumn.cards.findIndex(
-          (c) => c._id === over.id
-        )
-
-        let newCardIndex: number = NaN
-
-        const isBelowOverItem =
-          active.rect.current.translated &&
-          active.rect.current.translated.top > over.rect.top + over.rect.height
-
-        const modifier = isBelowOverItem ? 1 : 0
-
-        newCardIndex =
-          overCardIndex >= 0
-            ? overCardIndex + modifier
-            : overColumn.cards.length + 1
-
-        const nextColumns = cloneDeep(prev)
-        const nextActiveColumn = nextColumns.find(
-          (c) => c._id === activeColumn._id
-        )
-        const nextOverColumn = nextColumns.find((c) => c._id === overColumn._id)
-
-        if (nextActiveColumn) {
-          nextActiveColumn.cards = nextActiveColumn.cards.filter(
-            (c) => c._id !== active.id
-          )
-          nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
-            (c) => c._id
-          )
-        }
-
-        if (nextOverColumn) {
-          nextOverColumn.cards = nextOverColumn.cards.filter(
-            (c) => c._id !== active.id
-          )
-          nextOverColumn.cards = nextOverColumn.cards.toSpliced(
-            newCardIndex,
-            0,
-            active.data.current as Card
-          )
-          nextOverColumn.cardOrderIds = nextOverColumn.cards.map((c) => c._id)
-        }
-
-        return nextColumns
-      })
+      moveCardBetweenDifferentColumns(active, over, overColumn, activeColumn)
     }
   }
 
@@ -168,11 +183,13 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     if (activeDragType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const activeColumn = findColumnByCardId(active.id)
       const overColumn = findColumnByCardId(over.id)
+        ? findColumnByCardId(over.id)
+        : orderedColumns.find((c) => c._id === over.id)
 
       if (!activeColumn || !overColumn) return
 
       if (activeColumnOld?._id !== overColumn._id) {
-        console.log('Hành động kéo thả card giữa 2 column khác nhau')
+        moveCardBetweenDifferentColumns(active, over, overColumn, activeColumn)
       } else {
         const oldIndex = activeColumnOld.cards.findIndex(
           (c) => c._id === active.id
@@ -208,6 +225,7 @@ function BoxColumnList({ columns }: BoxColumnListType) {
       //  call api save database
       // const columnOrderIds = dndOrderedColumns.map((c) => c._id)
     }
+    // console.log(orderedColumns)
 
     setDndData({})
     setActiveDragId(null)
@@ -225,10 +243,39 @@ function BoxColumnList({ columns }: BoxColumnListType) {
     })
   }
 
+  const collisionDetectionStrategy: CollisionDetection = useCallback(
+    (args) => {
+      if (activeDragType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+        return closestCorners({ ...args })
+      }
+
+      const pointerIntersections = pointerWithin(args)
+      const intersections =
+        pointerIntersections.length > 0
+          ? // If there are droppables intersecting with the pointer, return those
+            pointerIntersections
+          : rectIntersection(args)
+
+      const overId = getFirstCollision(intersections, 'id')
+
+      if (overId) {
+        lastOverId.current = overId
+        return [{ id: overId }]
+      }
+      return lastOverId.current ? [{ id: lastOverId.current }] : []
+    },
+    [activeDragType]
+  )
+
   return (
     <DndContext
+      measuring={{
+        droppable: {
+          strategy: MeasuringStrategy.Always
+        }
+      }}
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
