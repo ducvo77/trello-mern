@@ -1,10 +1,7 @@
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import './globals.css'
-import ThemeRegistry from './components/ThemeRegistry/ThemeRegistry'
-import Container from '@mui/material/Container'
-import NavBar from './components/NavBar'
-import Header from './components/Header'
+import ContainLayout from './components/ContainLayout'
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -25,17 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <ThemeRegistry>
-          <Container
-            disableGutters
-            maxWidth={false}
-            sx={{ maxHeight: '100vh', overflowY: 'hidden' }}
-          >
-            <Header />
-            <NavBar />
-            {children}
-          </Container>
-        </ThemeRegistry>
+        <ContainLayout>{children}</ContainLayout>
       </body>
     </html>
   )

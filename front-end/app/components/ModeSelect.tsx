@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
@@ -16,7 +16,6 @@ import {
 
 export default function ModeSelect() {
   const { mode, setMode } = useColorScheme()
-  const [isClient, setIsClient] = useState(false)
 
   const handleChangeMode = useCallback(
     (event: any) => {
@@ -24,10 +23,6 @@ export default function ModeSelect() {
     },
     [setMode]
   )
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
 
   return (
     <FormControl size="small">
@@ -42,7 +37,7 @@ export default function ModeSelect() {
       >
         Mode
       </InputLabel>
-      {isClient && (
+      {
         <Select
           labelId="container-mode-label"
           id="container-mode"
@@ -87,7 +82,7 @@ export default function ModeSelect() {
             </Box>
           </MenuItem>
         </Select>
-      )}
+      }
     </FormControl>
   )
 }

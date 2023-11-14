@@ -1,7 +1,6 @@
 import { Roboto } from 'next/font/google'
 
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
-// import { cyan, deepOrange, orange, teal } from '@mui/material/colors'
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],

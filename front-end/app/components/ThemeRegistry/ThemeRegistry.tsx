@@ -16,7 +16,7 @@ export default function ThemeRegistry({
 }) {
   return (
     <React.Fragment>
-      {getInitColorSchemeScript()}
+      {getInitColorSchemeScript({ defaultMode: 'system' })}
       <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
         <CssVarsProvider theme={theme}>
           <CssBaseline />
