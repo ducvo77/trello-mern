@@ -7,7 +7,6 @@ import Button from '@mui/material/Button'
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined'
 import {
   DndContext,
-  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -18,7 +17,8 @@ import {
   DragOverlay,
   DropAnimation,
   defaultDropAnimationSideEffects,
-  UniqueIdentifier
+  UniqueIdentifier,
+  closestCorners
 } from '@dnd-kit/core'
 import {
   arrayMove,
@@ -50,9 +50,12 @@ function BoxColumnList({ columns }: BoxColumnListType) {
   const [activeDragType, setActiveDragType] = useState<
     'ACTIVE_DRAG_ITEM_TYPE_COLUMN' | 'ACTIVE_DRAG_ITEM_TYPE_CARD' | ''
   >('')
-  // const [activeDragId, setActiveDragId] = useState<UniqueIdentifier | null>(
-  //   null
-  // )
+  const [activeColumnOld, setActiveColumnOld] = useState<Column | undefined>(
+    undefined
+  )
+  const [activeDragId, setActiveDragId] = useState<UniqueIdentifier | null>(
+    null
+  )
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -85,12 +88,15 @@ function BoxColumnList({ columns }: BoxColumnListType) {
   const handleDragStart = (event: DragEndEvent) => {
     const { active } = event
     setDndData(active.data.current)
-    // setActiveDragId(active.id)
+    setActiveDragId(active.id)
     setActiveDragType(
       active.data.current?.columnId
         ? ACTIVE_DRAG_ITEM_TYPE.CARD
         : ACTIVE_DRAG_ITEM_TYPE.COLUMN
     )
+    if (active.data.current?.columnId) {
+      setActiveColumnOld(findColumnByCardId(active.id))
+    }
   }
 
   const handleDragOver = (event: DragEndEvent) => {
@@ -100,7 +106,6 @@ function BoxColumnList({ columns }: BoxColumnListType) {
 
     const activeColumn = findColumnByCardId(active.id)
     const overColumn = findColumnByCardId(over.id)
-    console.log(activeColumn, overColumn)
 
     if (!activeColumn || !overColumn) return
 
@@ -128,7 +133,6 @@ function BoxColumnList({ columns }: BoxColumnListType) {
           (c) => c._id === activeColumn._id
         )
         const nextOverColumn = nextColumns.find((c) => c._id === overColumn._id)
-        console.log(nextOverColumn)
 
         if (nextActiveColumn) {
           nextActiveColumn.cards = nextActiveColumn.cards.filter(
@@ -150,7 +154,6 @@ function BoxColumnList({ columns }: BoxColumnListType) {
           )
           nextOverColumn.cardOrderIds = nextOverColumn.cards.map((c) => c._id)
         }
-        // console.log(nextColumns)
 
         return nextColumns
       })
@@ -162,18 +165,54 @@ function BoxColumnList({ columns }: BoxColumnListType) {
 
     if (active.id === over?.id || !over?.id) return
 
-    const oldIndex = orderedColumns.findIndex((c) => c._id === active.id)
-    const newIndex = orderedColumns.findIndex((c) => c._id === over?.id)
+    if (activeDragType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      const activeColumn = findColumnByCardId(active.id)
+      const overColumn = findColumnByCardId(over.id)
 
-    const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex)
+      if (!activeColumn || !overColumn) return
 
-    //  call api save database
-    // const columnOrderIds = dndOrderedColumns.map((c) => c._id)
+      if (activeColumnOld?._id !== overColumn._id) {
+        console.log('Hành động kéo thả card giữa 2 column khác nhau')
+      } else {
+        const oldIndex = activeColumnOld.cards.findIndex(
+          (c) => c._id === active.id
+        )
+        const newIndex = activeColumnOld.cards.findIndex(
+          (c) => c._id === over?.id
+        )
 
-    setOrderedColumns(dndOrderedColumns)
+        const dndOrderedCards = arrayMove(
+          activeColumnOld.cards,
+          oldIndex,
+          newIndex
+        )
+
+        setOrderedColumns((prev) => {
+          const nextColumns = cloneDeep(prev)
+
+          const targetColumn = nextColumns.find((c) => c._id === overColumn._id)
+          if (targetColumn) targetColumn.cards = dndOrderedCards
+          if (targetColumn)
+            targetColumn.cardOrderIds = dndOrderedCards.map((c) => c._id)
+          return nextColumns
+        })
+      }
+    }
+
+    if (activeDragType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      const oldIndex = orderedColumns.findIndex((c) => c._id === activeDragId)
+      const newIndex = orderedColumns.findIndex((c) => c._id === over?.id)
+
+      const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex)
+      setOrderedColumns(dndOrderedColumns)
+      //  call api save database
+      // const columnOrderIds = dndOrderedColumns.map((c) => c._id)
+    }
+
     setDndData({})
-    // setActiveDragId(null)
+    setActiveDragId(null)
     setActiveDragType('')
+    setActiveColumnOld(undefined)
   }
 
   const dropAnimation: DropAnimation = {
@@ -189,7 +228,7 @@ function BoxColumnList({ columns }: BoxColumnListType) {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      collisionDetection={closestCorners}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
