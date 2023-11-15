@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-// import IconButton from '@mui/material/IconButton'
+import { ChangeEvent, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
@@ -18,6 +17,7 @@ import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined'
+import TextField from '@mui/material/TextField'
 
 interface ColumnHeaderType {
   column: Column
@@ -25,6 +25,8 @@ interface ColumnHeaderType {
 
 function ColumnHeader({ column }: ColumnHeaderType) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [title, setTitle] = useState<string>(column.title)
+
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -32,25 +34,72 @@ function ColumnHeader({ column }: ColumnHeaderType) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+    console.log(e.target.value)
+  }
+
   return (
     <Box
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'start',
+        gap: 2,
         mb: 2
       }}
     >
-      <Typography
-        variant="h2"
+      <Box
         sx={{
-          fontWeight: 500,
-          padding: '6px 8px 6px 12px',
-          lineHeight: 1.6
+          minWidth: 'calc(100% - 40px)',
+          maxWidth: 'calc(100% - 40px)',
+          position: 'relative'
         }}
       >
-        {column.title}
-      </Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            width: '100%',
+            height: 'auto',
+            fontWeight: 500,
+            padding: '6px 8px 6px 12px',
+            lineHeight: 1.6,
+            color: 'transparent'
+          }}
+        >
+          {title}
+        </Typography>
+
+        <TextField
+          multiline
+          type="text"
+          id={`filled-title-column-${column._id}`}
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            backgroundColor: 'transparent',
+            '& .MuiInputBase-root': {
+              p: 0
+            },
+            '& .MuiInputBase-input': {
+              fontWeight: 500,
+              padding: '6px 8px 6px 12px',
+              lineHeight: 1.6,
+              fontSize: '0.875rem',
+              width: '100%',
+              height: 'auto'
+            },
+            '& fieldset': {
+              borderColor: 'transparent'
+            }
+          }}
+          value={title}
+          variant="outlined"
+          onChange={handleChangeTitle}
+        />
+      </Box>
       <Tooltip title="More Options">
         <Button
           id={'button-column-header'}

@@ -5,10 +5,17 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DragHandleOutlinedIcon from '@mui/icons-material/DragHandleOutlined'
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
+import Tooltip from '@mui/material/Tooltip'
 
-function ColumnFooter() {
+function ColumnFooter({
+  listeners
+}: {
+  listeners: SyntheticListenerMap | undefined
+}) {
   return (
     <Box
+      {...listeners}
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -26,9 +33,11 @@ function ColumnFooter() {
         Add new card
       </Button>
 
-      <IconButton sx={{ borderRadius: 1 }}>
-        <DragHandleOutlinedIcon fontSize="small" />
-      </IconButton>
+      <Tooltip title="Drag">
+        <IconButton sx={{ borderRadius: 1 }}>
+          <DragHandleOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
     </Box>
   )
 }

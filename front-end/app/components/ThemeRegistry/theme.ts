@@ -74,9 +74,9 @@ const theme = extendTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          '& fieldset': { borderWidth: '0.5px !important' },
-          '&:hover fieldset': { borderWidth: '1px !important' },
-          '&.Mui-focused fieldset': { borderWidth: '1px !important' }
+          '& fieldset': { borderWidth: '1px' },
+          '&:hover fieldset': { borderWidth: '2px' },
+          '&.Mui-focused fieldset': { borderWidth: '2px' }
         }
       }
     }

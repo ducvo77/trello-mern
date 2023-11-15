@@ -39,7 +39,7 @@ function BoxColumn({ column }: BoxColumnType) {
   return (
     <div ref={setNodeRef} style={dndKitStyle} {...attributes}>
       <Box
-        {...listeners}
+        // {...listeners}
         sx={{
           minWidth: '272px',
           maxWidth: '272px',
@@ -78,7 +78,7 @@ function BoxColumn({ column }: BoxColumnType) {
             ))}
           </SortableContext>
         </Box>
-        <ColumnFooter />
+        <ColumnFooter listeners={listeners} />
       </Box>
     </div>
   )

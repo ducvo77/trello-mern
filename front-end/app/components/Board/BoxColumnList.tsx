@@ -225,7 +225,6 @@ function BoxColumnList({ columns }: BoxColumnListType) {
       //  call api save database
       // const columnOrderIds = dndOrderedColumns.map((c) => c._id)
     }
-    // console.log(orderedColumns)
 
     setDndData({})
     setActiveDragId(null)
