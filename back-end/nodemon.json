@@ -1,0 +1,6 @@
+{
+    "watch": ["src"],
+    "ext": ".ts,.js",
+    "ignore": [],
+    "exec": "cross-env BUILD_MODE=dev npx ts-node ./src/server.ts"
+  }
